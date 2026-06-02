@@ -30,9 +30,33 @@ models:
       --ctx-size 65536
       -np 1
     proxy: "http://127.0.0.1:${PORT}"
-
-    # 유휴 300초(5분) 후 모델 언로드 → RAM 해제.
     ttl: 300
-
-    # 준비 확인 엔드포인트(기본값 /health, llama-server 가 제공).
+    checkEndpoint: /health
+    
+  "gemma-4-e2b":
+    # CPU 전용 실행. --port 만 llama-swap 이 자동 할당한다.
+    cmd: |
+      /app/llama-server
+      -m /models/gemma-4-e2b.gguf
+      --host 127.0.0.1
+      --port ${PORT}
+      -ngl 0
+      --ctx-size 65536
+      -np 1
+    proxy: "http://127.0.0.1:${PORT}"
+    ttl: 300
+    checkEndpoint: /health
+    
+  "gemma-4-e4b":
+    # CPU 전용 실행. --port 만 llama-swap 이 자동 할당한다.
+    cmd: |
+      /app/llama-server
+      -m /models/gemma-4-e4b.gguf
+      --host 127.0.0.1
+      --port ${PORT}
+      -ngl 0
+      --ctx-size 65536
+      -np 1
+    proxy: "http://127.0.0.1:${PORT}"
+    ttl: 300
     checkEndpoint: /health
