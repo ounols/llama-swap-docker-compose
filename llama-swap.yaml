@@ -50,6 +50,22 @@ models:
     proxy: "http://127.0.0.1:${PORT}"
     ttl: 300
     checkEndpoint: /health
+
+  "gemma-4-e2b-q4":
+    # CPU 전용 실행. --port 만 llama-swap 이 자동 할당한다.
+    cmd: |
+      /app/llama-server
+      -m /models/gemma-4-e2b.gguf
+      --host 127.0.0.1
+      --port ${PORT}
+      -ngl 0
+      --ctx-size 65536
+      --cache-type-k q4_0
+      --cache-type-v q4_0
+      -np 1
+    proxy: "http://127.0.0.1:${PORT}"
+    ttl: 300
+    checkEndpoint: /health
     
   "gemma-4-e4b":
     # CPU 전용 실행. --port 만 llama-swap 이 자동 할당한다.
