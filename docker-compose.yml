@@ -1,6 +1,7 @@
 services:
 
-  llama-server:
+  llama-swap:
+    container_name: llama-swap
     image: ${LLAMA_SWAP_IMAGE:-ghcr.io/mostlygeek/llama-swap:cpu}
     volumes:
       - ./models:/models:ro
