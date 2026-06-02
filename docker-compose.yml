@@ -1,0 +1,19 @@
+services:
+
+  llama-server:
+    image: ${LLAMA_SWAP_IMAGE:-ghcr.io/mostlygeek/llama-swap:cpu}
+    volumes:
+      - ./models:/models:ro
+      - ./llama-swap.yaml:/app/config.yaml:ro
+    ports:
+      - "8080:8080"
+
+    # llama-swap 의 /health
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8080/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+      start_period: 30s
+
+    restart: unless-stopped

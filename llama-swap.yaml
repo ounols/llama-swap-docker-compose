@@ -1,0 +1,38 @@
+# 콜드 스타트 시 모델이 준비될 때까지 기다리는 최대 시간(초).
+healthCheckTimeout: 300
+
+models:
+  "lfm-2.5-350m-uncencored":
+    cmd: |
+      /app/llama-server
+      -m /models/lfm-2.5-uncencored.gguf
+      --host 127.0.0.1
+      --port ${PORT}
+      -ngl 0
+      --ctx-size 8192
+      -np 1
+    proxy: "http://127.0.0.1:${PORT}"
+
+    # 유휴 300초(5분) 후 모델 언로드 → RAM 해제.
+    ttl: 300
+
+    # 준비 확인 엔드포인트(기본값 /health, llama-server 가 제공).
+    checkEndpoint: /health
+
+  "lfm-2.5-8b-a1b":
+    # CPU 전용 실행. --port 만 llama-swap 이 자동 할당한다.
+    cmd: |
+      /app/llama-server
+      -m /models/lfm-2.5-8b-a1b.gguf
+      --host 127.0.0.1
+      --port ${PORT}
+      -ngl 0
+      --ctx-size 65536
+      -np 1
+    proxy: "http://127.0.0.1:${PORT}"
+
+    # 유휴 300초(5분) 후 모델 언로드 → RAM 해제.
+    ttl: 300
+
+    # 준비 확인 엔드포인트(기본값 /health, llama-server 가 제공).
+    checkEndpoint: /health
