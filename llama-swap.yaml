@@ -82,3 +82,18 @@ models:
     proxy: "http://127.0.0.1:${PORT}"
     ttl: 300
     checkEndpoint: /health
+  "ornith-1.0-9b":
+    # CPU 전용 실행. --port 만 llama-swap 이 자동 할당한다.
+    cmd: |
+      /app/llama-server
+      -m /models/ornith-1.0-9b-Q4_K_M.gguf
+      --host 127.0.0.1
+      --port ${PORT}
+      -ngl 0
+      --ctx-size 65536
+      --cache-type-k q8_0
+      --cache-type-v q4_0
+      -np 1
+    proxy: "http://127.0.0.1:${PORT}"
+    ttl: 300
+    checkEndpoint: /health
